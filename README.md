@@ -1,38 +1,73 @@
+
 ### README for ShoppingCartApp
 
 ---
 
 ## **ShoppingCartApp**
 
-This repository demonstrates a comprehensive **Shopping Cart** application built in **Swift**, utilizing **SwiftUI**, **Combine**, and the **MVVM architecture**. The app includes dynamic product management, real-time tax calculations, error handling, and robust unit testing.
+This repository demonstrates a comprehensive **Shopping Cart** application built in **Swift**, utilizing **SwiftUI**, **Combine**, and the **MVVM architecture**. The app integrates with a Price API for dynamic product pricing, provides real-time cart state management, and implements robust unit testing.
+
+---
+
+## **Begin the Task**
+
+This application is designed to fulfill the following shopping cart capabilities:
+
+1. **Add Products to the Cart**:
+
+   * Specify the product name and quantity.
+   * Retrieve the product price dynamically from the Price API.
+
+2. **Cart State Management**:
+
+   * View the cart subtotal (sum of prices for all items).
+   * Calculate tax payable at **12.5%** on the subtotal.
+   * Compute the total payable (subtotal + tax).
+   * Round all totals to **two decimal places**.
+
+3. **Price API Integration**:
+
+   * Fetch product prices using the Price API.
+   * Handle errors such as missing product data or network issues.
 
 ---
 
 ## **Features**
 
-1. **Product Management**:
+1. **Dynamic Product Pricing**:
 
-   * Add products to the shopping cart.
-   * Automatically update product quantities for duplicates.
-   * Remove products or adjust their quantities dynamically.
+   * Integrates with the Price API to retrieve accurate prices for specified products.
 
-2. **Tax Calculation**:
+2. **Stateful Cart Management**:
 
-   * Calculates a tax of **12.5%** on the cart subtotal.
-   * Provides a clear summary of subtotal, tax, and total payable amounts.
+   * Tracks the quantity and total price for each product.
+   * Provides a summary of subtotal, tax, and total payable.
 
-3. **Networking**:
+3. **Error Handling**:
 
-   * Fetches product details dynamically from a remote API.
-   * Handles network errors, invalid URLs, and JSON decoding gracefully.
+   * Handles invalid product names, network failures, and API errors gracefully.
 
-4. **Error Handling**:
+4. **Testing**:
 
-   * Displays user-friendly error messages for invalid inputs or network issues.
+   * Comprehensive unit tests to ensure the correctness of cart operations and API integration.
 
-5. **Testing**:
+---
 
-   * Comprehensive unit tests for all core functionalities including product addition, tax calculations, and API interaction.
+## **Example Usage**
+
+### **Inputs**
+
+1. Add 1 × `cornflakes` @ 2.52 each.
+2. Add another 1 × `cornflakes` @ 2.52 each.
+3. Add 1 × `weetabix` @ 9.98 each.
+
+### **Results**
+
+* Cart contains **2 x cornflakes**.
+* Cart contains **1 x weetabix**.
+* **Subtotal**: 15.02
+* **Tax**: 1.88
+* **Total**: 16.90
 
 ---
 
@@ -42,35 +77,41 @@ This repository demonstrates a comprehensive **Shopping Cart** application built
 
 1. **`ShoppingCartViewModel`**:
 
-   * Manages the app's state including the cart items, subtotal, tax, and total.
-   * Encapsulates the logic for adding products, fetching data, and recalculating totals.
+   * Handles product addition, price retrieval, and cart state calculations.
+   * Provides real-time updates for subtotal, tax, and total payable.
 
-2. **`ShoppingCartView`**:
+2. **`Product`**:
 
-   * The main SwiftUI view displaying the cart's user interface.
-   * Includes forms for adding products and summaries for cart details.
+   * Represents a product with properties such as `name` and `price`.
 
-3. **`Product`**:
+3. **`CartItem`**:
 
-   * A model representing a product, with properties for title and price.
+   * Tracks individual product quantities and prices.
 
-4. **`CartItem`**:
+4. **`PriceAPIService`**:
 
-   * Tracks individual product details and their quantities in the cart.
+   * Fetches product prices from the Price API.
+
+5. **`ShoppingCartView`**:
+
+   * SwiftUI-based interface for viewing and managing the cart.
 
 ---
 
-## **Unit Tests**
+## **Price API Service**
 
-* **`ShoppingCartViewModelTests`**:
+### **Service Details**
 
-  * Validates product addition, cart recalculations, and error handling.
-  * Covers scenarios such as adding duplicate products, invalid inputs, and empty carts.
+* **Base URL**: `https://equalexperts.github.io/`
+* **Endpoint**: `/backend-take-home-test-data/{product}.json`
 
-* **`ShoppingCartIntegrationTests`**:
+### **List of Available Products**
 
-  * Tests the integration between the ViewModel and its methods.
-  * Ensures cart functionality and API interaction work as expected.
+* cheerios
+* cornflakes
+* frosties
+* shreddies
+* weetabix
 
 ---
 
@@ -107,30 +148,13 @@ This repository demonstrates a comprehensive **Shopping Cart** application built
 
 ---
 
-## **How It Works**
-
-1. **Product Management**:
-
-   * Users input product names and quantities, which are validated and added to the cart.
-   * Products are fetched from a remote API to ensure accurate details.
-
-2. **Cart Calculations**:
-
-   * The ViewModel computes the subtotal, applies tax, and calculates the total payable amount dynamically.
-
-3. **Error Handling**:
-
-   * The app displays alerts for invalid product names, quantities, or network issues.
-
----
-
 ## **Key Concepts Demonstrated**
 
-* **SwiftUI**: Declarative UI for building responsive layouts.
-* **Combine Framework**: Managing state and handling asynchronous operations.
-* **Networking**: Fetching data from a RESTful API using `URLSession`.
-* **MVVM Architecture**: Clear separation of concerns between UI and logic.
-* **Unit Testing**: Ensuring functionality and robustness with XCTest.
+* **SwiftUI**: Declarative UI framework for building interactive views.
+* **Combine Framework**: Managing asynchronous operations and state.
+* **Networking**: Using `URLSession` to fetch product data from the Price API.
+* **MVVM Architecture**: Clear separation of UI and business logic.
+* **Unit Testing**: Ensuring correctness of cart operations with XCTest.
 
 ---
 
@@ -150,5 +174,6 @@ Contributions are welcome! Feel free to:
 * Report issues or suggest enhancements.
 
 ---
+
 
 
