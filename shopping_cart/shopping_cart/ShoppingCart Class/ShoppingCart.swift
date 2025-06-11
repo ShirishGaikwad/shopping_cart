@@ -21,7 +21,7 @@ final class ShoppingCartViewModel: ObservableObject {
     
     private let taxRate = 0.125
     private let apiBaseURL = "https://equalexperts.github.io/backend-take-home-test-data"
-
+    
     func addProduct(productName: String, quantity: Int) async {
         guard !productName.isEmpty, quantity > 0 else {
             showError(message: "Invalid product name or quantity.")
@@ -29,29 +29,26 @@ final class ShoppingCartViewModel: ObservableObject {
         }
 
         do {
-            // Attempt to fetch the product from the API
             let product = try await fetchProduct(productName: productName)
 
-            //let product = try await fetchProduct(name: productName)
-            print("Fetched product: \(product)")
-            
-            // Create a new cart item and update the cart
-            let cartItem = CartItem(product: product, quantity: quantity)
             await MainActor.run {
-                cartItems.append(cartItem)
-                recalculateCart() // Recalculate cart totals
+                if let existingItemIndex = cartItems.firstIndex(where: { $0.product.title.lowercased() == product.title.lowercased() }) {
+                    // Update quantity if product already exists
+                    cartItems[existingItemIndex].quantity += quantity
+                } else {
+                    // Add new product to cart
+                    cartItems.append(CartItem(product: product, quantity: quantity))
+                }
+                recalculateCart()
             }
-        } catch ShoppingCartError.invalidUrl {
-            showError(message: "The URL for the product is invalid.")
-        } catch ShoppingCartError.serverError(let statusCode) {
-            showError(message: "Server error: \(statusCode).")
-        } catch ShoppingCartError.decodingError {
-            showError(message: "Failed to decode the product information.")
         } catch {
-            // Catch-all for any other errors
-            showError(message: "An unexpected error occurred: \(error.localizedDescription).")
+            showError(message: "An error occurred: \(error.localizedDescription)")
         }
     }
+
+
+    
+
 
 
     func fetchProduct(productName: String) async throws -> Product {
@@ -89,7 +86,7 @@ final class ShoppingCartViewModel: ObservableObject {
 //            totalPayable: Double(round(100 * total) / 100)
 //        )
 //    }
-    private func recalculateCart() {
+    internal func recalculateCart() {
         // Calculate subtotal
         subtotal = cartItems.reduce(0.0) { $0 + ($1.product.price * Double($1.quantity)) }
         

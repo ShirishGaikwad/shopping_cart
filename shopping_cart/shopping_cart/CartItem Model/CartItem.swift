@@ -6,8 +6,8 @@ import Foundation
 
 struct CartItem: Identifiable {
     let id = UUID()
-    let product: Product
-    let quantity: Int
+    var product: Product
+    var quantity: Int
     var totalPrice: Double {
         Double(quantity) * product.price
     }

@@ -3,7 +3,6 @@
 //  Created by shirish gayakawad on 01/06/25.
 
 import SwiftUI
-
 struct ShoppingCartView: View {
     @StateObject private var viewModel = ShoppingCartViewModel()
     @State private var productName = ""
